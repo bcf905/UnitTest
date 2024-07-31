@@ -1,4 +1,5 @@
 ﻿using MotionPlanning.Auxiliary;
+using MotionPlanning.Job;
 using MotionPlanning.State;
 using MotionPlanning.Statements;
 using System;
@@ -16,7 +17,8 @@ namespace UnitTest.Statements
         public void Identification()
         {
             string gcode = "G90 X141.379 Y84.536 E324.40933";
-            IURScript statement = Identifier.Identify(gcode);
+            Job job = new Job();
+            IURScript statement = Identifier.Identify(gcode, job);
             Assert.That(statement.GetType(), Is.EqualTo(typeof(AbsolutePositioning)));
         }
         [Test]
