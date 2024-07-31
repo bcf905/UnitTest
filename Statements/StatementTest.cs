@@ -22,8 +22,7 @@ namespace UnitTest.Statements
             Assert.That(stm.X, Is.AtMost(141.379 + tolerance));
             Assert.That(stm.Y, Is.AtLeast(84.536 - tolerance));
             Assert.That(stm.Y, Is.AtMost(84.536 + tolerance));
-            Assert.That(stm.Z, Is.AtLeast(0.0 - tolerance));
-            Assert.That(stm.Z, Is.AtMost(0.0 + tolerance));
+            Assert.That(stm.Z, Is.AtMost(float.MinValue + tolerance));
         }
         [Test]
         // Testing a valid statement
@@ -38,8 +37,7 @@ namespace UnitTest.Statements
             Assert.That(stm.X, Is.AtMost(141.379 + tolerance));
             Assert.That(stm.Y, Is.AtLeast(84.536 - tolerance));
             Assert.That(stm.Y, Is.AtMost(84.536 + tolerance));
-            Assert.That(stm.Z, Is.AtLeast(0.0 - tolerance));
-            Assert.That(stm.Z, Is.AtMost(0.0 + tolerance));
+            Assert.That(stm.Z, Is.AtMost(float.MinValue + tolerance));
         }
         [Test]
         // Testing an invalid statement

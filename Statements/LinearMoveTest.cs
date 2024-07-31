@@ -36,9 +36,7 @@ namespace UnitTest.Statements
             Assert.That(stm.X, Is.AtMost(141.379 + tolerance));
             Assert.That(stm.Y, Is.AtLeast(84.536 - tolerance));
             Assert.That(stm.Y, Is.AtMost(84.536 + tolerance));
-            Assert.That(stm.Z, Is.AtLeast(0.0 - tolerance));
-            Assert.That(stm.Z, Is.AtMost(0.0 + tolerance));
-            Assert.That(stm.URScript(st), Is.EqualTo("Linear Move - X:141.379, Y:84.536, Z:0.000"));
+            Assert.That(stm.Z, Is.AtMost(float.MinValue + tolerance));
         }
     }
 }

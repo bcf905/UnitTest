@@ -104,6 +104,16 @@ namespace UnitTest
             string str = "X";
             Assert.That(MotionPlanning.Auxiliary.RegEx.returnFloat(name, str), Is.EqualTo(float.MinValue));
         }
+        // Test for returning the value of z.
+        [Test]
+        public void ReturnZ()
+        {
+            float tolerance = 0.001f;
+            char name = 'Z';
+            string str = "G0 X5.00 Y20.00 Z1.25 E324.40933";
+            Assert.That(MotionPlanning.Auxiliary.RegEx.returnFloat(name, str), Is.AtLeast(1.25 - tolerance));
+            Assert.That(MotionPlanning.Auxiliary.RegEx.returnFloat(name, str), Is.AtMost(1.25 + tolerance));
+        }
 
     }
 }

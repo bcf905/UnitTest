@@ -46,7 +46,7 @@ namespace UnitTest
             string gcode = "G0 X141.379 Y84.536 E324.40933";
             IURScript statement = Identifier.Identify(gcode, job);
             job.AddStatement(statement);
-            string gcode2 = "G0 X141.379 Y84.536 Z10.25 E324.40933";
+            string gcode2 = "G0 X141.379 Y84.536 Z1.25 E324.40933";
             IURScript statement2 = Identifier.Identify(gcode2, job);
             job.AddStatement(statement2);
             string gcode3 = "G0 X111.379 Y94.536 Z10.25 E324.40933";
@@ -60,8 +60,8 @@ namespace UnitTest
             Assert.That(job.MinY, Is.AtMost(84.536 + tolerance));
             Assert.That(job.MaxY, Is.AtLeast(94.536 - tolerance));
             Assert.That(job.MaxY, Is.AtMost(94.536 + tolerance));
-            Assert.That(job.MinZ, Is.AtLeast(0.0 - tolerance));
-            Assert.That(job.MinZ, Is.AtMost(0.0 + tolerance));
+            Assert.That(job.MinZ, Is.AtLeast(1.25 - tolerance));
+            Assert.That(job.MinZ, Is.AtMost(1.25 + tolerance));
             Assert.That(job.MaxZ, Is.AtLeast(10.25 - tolerance));
             Assert.That(job.MaxZ, Is.AtMost(10.25 + tolerance));
         }

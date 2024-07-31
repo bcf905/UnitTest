@@ -46,8 +46,7 @@ namespace UnitTest
             Assert.That(st.X, Is.AtMost(151.379 + tolerance));
             Assert.That(st.Y, Is.AtLeast(94.536 - tolerance));
             Assert.That(st.Y, Is.AtMost(94.536 + tolerance));
-            Assert.That(st.Z, Is.AtLeast(0.0 - tolerance));
-            Assert.That(st.Z, Is.AtMost(0.0 + tolerance));
+            Assert.That(st.Z, Is.AtMost(float.MinValue + tolerance));
         }
         [Test]
         // Testing a statement with inches
@@ -63,8 +62,7 @@ namespace UnitTest
             Assert.That(st.X, Is.AtMost(3591.0266 + tolerance));
             Assert.That(st.Y, Is.AtLeast(2147.2144 - tolerance));
             Assert.That(st.Y, Is.AtMost(2147.2144 + tolerance));
-            Assert.That(st.Z, Is.AtLeast(0.0 - tolerance));
-            Assert.That(st.Z, Is.AtMost(0.0 + tolerance));
+            Assert.That(st.Z, Is.AtMost(float.MinValue + tolerance));
         }
     }
 }
