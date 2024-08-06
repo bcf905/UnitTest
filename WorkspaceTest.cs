@@ -24,7 +24,8 @@ namespace UnitTest
             Coordinate2D lowerleft = new Coordinate2D(10, 10);
             Coordinate2D upperright = new Coordinate2D(20, 20);
             float height = 10;
-            Workspace workspace = new Workspace(lowerleft, upperright, height);
+            float offset = 0f;
+            Workspace workspace = new Workspace(lowerleft, upperright, height, offset);
             Assert.That(workspace.LowerX, Is.AtLeast(10 - tolerance));
             Assert.That(workspace.LowerX, Is.AtMost(10 + tolerance));
             Assert.That(workspace.UpperX, Is.AtLeast(20 - tolerance));
@@ -44,7 +45,8 @@ namespace UnitTest
             Coordinate2D lowerleft = new Coordinate2D(10, 10);
             Coordinate2D upperright = new Coordinate2D(20, 20);
             float height = 10;
-            Workspace workspace = new Workspace(upperright, lowerleft, height);
+            float offset = 0f;
+            Workspace workspace = new Workspace(upperright, lowerleft, height, offset);
             Assert.That(workspace.LowerX, Is.AtLeast(10 - tolerance));
             Assert.That(workspace.LowerX, Is.AtMost(10 + tolerance));
             Assert.That(workspace.UpperX, Is.AtLeast(20 - tolerance));
@@ -64,7 +66,8 @@ namespace UnitTest
             Coordinate2D upperleft = new Coordinate2D(10, 20);
             Coordinate2D lowerright = new Coordinate2D(20, 10);
             float height = 10;
-            Workspace workspace = new Workspace(upperleft, lowerright, height);
+            float offset = 0f;
+            Workspace workspace = new Workspace(upperleft, lowerright, height, offset);
             Assert.That(workspace.LowerX, Is.AtLeast(10 - tolerance));
             Assert.That(workspace.LowerX, Is.AtMost(10 + tolerance));
             Assert.That(workspace.UpperX, Is.AtLeast(20 - tolerance));
@@ -84,7 +87,8 @@ namespace UnitTest
             Coordinate2D upperleft = new Coordinate2D(10, 20);
             Coordinate2D lowerright = new Coordinate2D(20, 10);
             float height = 10;
-            Workspace workspace = new Workspace(lowerright, upperleft, height);
+            float offset = 0f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
             Assert.That(workspace.LowerX, Is.AtLeast(10 - tolerance));
             Assert.That(workspace.LowerX, Is.AtMost(10 + tolerance));
             Assert.That(workspace.UpperX, Is.AtLeast(20 - tolerance));
@@ -104,7 +108,8 @@ namespace UnitTest
             Coordinate2D upperleft = new Coordinate2D(10, 10);
             Coordinate2D lowerright = new Coordinate2D(100, 100);
             float height = 100;
-            Workspace workspace = new Workspace(lowerright, upperleft, height);
+            float offset = 0f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
             string gcode1 = "G0 X41.379 Y84.536 E324.40933";
             string gcode2 = "G0 X11.379 Y84.536 E324.40933";
             string gcode3 = "G0 X11.379 Y34.536 Z56.34 E324.40933";
@@ -123,7 +128,8 @@ namespace UnitTest
             Coordinate2D upperleft = new Coordinate2D(10, 10);
             Coordinate2D lowerright = new Coordinate2D(100, 100);
             float height = 100;
-            Workspace workspace = new Workspace(lowerright, upperleft, height);
+            float offset = 0f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
             string gcode1 = "G0 X41.379 Y84.536 E324.40933";
             string gcode2 = "G0 X141.379 Y84.536 E324.40933";
             string gcode3 = "G0 X11.379 Y34.536 Z56.34 E324.40933";
@@ -142,7 +148,8 @@ namespace UnitTest
             Coordinate2D upperleft = new Coordinate2D(10, 10);
             Coordinate2D lowerright = new Coordinate2D(100, 100);
             float height = 100;
-            Workspace workspace = new Workspace(lowerright, upperleft, height);
+            float offset = 0f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
             string gcode1 = "G0 X41.379 Y84.536 E324.40933";
             string gcode2 = "G0 X11.379 Y184.536 E324.40933";
             string gcode3 = "G0 X11.379 Y34.536 Z56.34 E324.40933";
@@ -161,7 +168,8 @@ namespace UnitTest
             Coordinate2D upperleft = new Coordinate2D(10, 10);
             Coordinate2D lowerright = new Coordinate2D(100, 100);
             float height = 100;
-            Workspace workspace = new Workspace(lowerright, upperleft, height);
+            float offset = 0f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
             string gcode1 = "G0 X41.379 Y84.536 Z0.0 E324.40933";
             string gcode2 = "G0 X11.379 Y14.536 E324.40933";
             string gcode3 = "G0 X11.379 Y34.536 Z156.34 E324.40933";
@@ -173,7 +181,7 @@ namespace UnitTest
             Assert.That(workspace.IsJobValid(job), Is.False);
         }
         [Test]
-        // Testing calibration for job
+        // Testing shifting for job
         public void Calibration()
         {
             float tolerance = 0.001f;
@@ -182,7 +190,8 @@ namespace UnitTest
             Coordinate2D coord1 = new Coordinate2D(10, 10);
             Coordinate2D coord2 = new Coordinate2D(100, 100);
             float height = 100;
-            Workspace workspace = new Workspace(coord1, coord2, height);
+            float offset = 0f;
+            Workspace workspace = new Workspace(coord1, coord2, height, offset);
 
             Assert.That(workspace.LowerX, Is.AtLeast(10 - tolerance));
             Assert.That(workspace.LowerX, Is.AtMost(10 + tolerance));
@@ -222,6 +231,168 @@ namespace UnitTest
             Assert.That(job.YShift, Is.AtMost(15 + tolerance));
             Assert.That(job.ZShift, Is.AtLeast(-1 - tolerance));
             Assert.That(job.ZShift, Is.AtMost(-1 + tolerance));
+        }
+        [Test]
+        // Testing bounds of workspace origin
+        public void BoundsOrigin()
+        {
+            float tolerance = 0.001f;
+            Coordinate2D upperleft = new Coordinate2D(10, 10);
+            Coordinate2D lowerright = new Coordinate2D(100, 100);
+            float height = 100;
+            float offset = 10f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+
+            Assert.That(workspace.Origin.X, Is.AtLeast(45 - tolerance));
+            Assert.That(workspace.Origin.X, Is.AtMost(45 + tolerance));
+            Assert.That(workspace.Origin.Y, Is.AtLeast(45 - tolerance));
+            Assert.That(workspace.Origin.Y, Is.AtMost(45 + tolerance));
+            Assert.That(workspace.Origin.Z, Is.AtLeast(45 - tolerance));
+            Assert.That(workspace.Origin.Z, Is.AtMost(45 + tolerance));
+        }
+        [Test]
+        // Testing bounds of workspace low corner 1
+        public void BoundsCorner1Low()
+        {
+            float tolerance = 0.001f;
+            Coordinate2D upperleft = new Coordinate2D(10, 10);
+            Coordinate2D lowerright = new Coordinate2D(100, 100);
+            float height = 100;
+            float offset = 10f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+
+            Assert.That(workspace.Corner1Low.X, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner1Low.X, Is.AtMost(10 + tolerance));
+            Assert.That(workspace.Corner1Low.Y, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner1Low.Y, Is.AtMost(10 + tolerance));
+            Assert.That(workspace.Corner1Low.Z, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner1Low.Z, Is.AtMost(10 + tolerance));
+        }
+        [Test]
+        // Testing bounds of workspace high corner 1
+        public void BoundsCorner1High()
+        {
+            float tolerance = 0.001f;
+            Coordinate2D upperleft = new Coordinate2D(10, 10);
+            Coordinate2D lowerright = new Coordinate2D(100, 100);
+            float height = 100;
+            float offset = 10f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+
+            Assert.That(workspace.Corner1High.X, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner1High.X, Is.AtMost(10 + tolerance));
+            Assert.That(workspace.Corner1High.Y, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner1High.Y, Is.AtMost(10 + tolerance));
+            Assert.That(workspace.Corner1High.Z, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner1High.Z, Is.AtMost(100 + tolerance));
+        }
+        [Test]
+        // Testing bounds of workspace low corner 2
+        public void BoundsCorner2Low()
+        {
+            float tolerance = 0.001f;
+            Coordinate2D upperleft = new Coordinate2D(10, 10);
+            Coordinate2D lowerright = new Coordinate2D(100, 100);
+            float height = 100;
+            float offset = 10f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+
+            Assert.That(workspace.Corner2Low.X, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner2Low.X, Is.AtMost(10 + tolerance));
+            Assert.That(workspace.Corner2Low.Y, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner2Low.Y, Is.AtMost(100 + tolerance));
+            Assert.That(workspace.Corner2Low.Z, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner2Low.Z, Is.AtMost(10 + tolerance));
+        }
+        [Test]
+        // Testing bounds of workspace high corner 2
+        public void BoundsCorner2High()
+        {
+            float tolerance = 0.001f;
+            Coordinate2D upperleft = new Coordinate2D(10, 10);
+            Coordinate2D lowerright = new Coordinate2D(100, 100);
+            float height = 100;
+            float offset = 10f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+
+            Assert.That(workspace.Corner2High.X, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner2High.X, Is.AtMost(10 + tolerance));
+            Assert.That(workspace.Corner2High.Y, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner2High.Y, Is.AtMost(100 + tolerance));
+            Assert.That(workspace.Corner2High.Z, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner2High.Z, Is.AtMost(100 + tolerance));
+        }
+        [Test]
+        // Testing bounds of workspace low corner 3
+        public void BoundsCorner3Low()
+        {
+            float tolerance = 0.001f;
+            Coordinate2D upperleft = new Coordinate2D(10, 10);
+            Coordinate2D lowerright = new Coordinate2D(100, 100);
+            float height = 100;
+            float offset = 10f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+
+            Assert.That(workspace.Corner3Low.X, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner3Low.X, Is.AtMost(100 + tolerance));
+            Assert.That(workspace.Corner3Low.Y, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner3Low.Y, Is.AtMost(100 + tolerance));
+            Assert.That(workspace.Corner3Low.Z, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner3Low.Z, Is.AtMost(10 + tolerance));
+        }
+        [Test]
+        // Testing bounds of workspace high corner 3
+        public void BoundsCorner3High()
+        {
+            float tolerance = 0.001f;
+            Coordinate2D upperleft = new Coordinate2D(10, 10);
+            Coordinate2D lowerright = new Coordinate2D(100, 100);
+            float height = 100;
+            float offset = 10f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+
+            Assert.That(workspace.Corner3High.X, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner3High.X, Is.AtMost(100 + tolerance));
+            Assert.That(workspace.Corner3High.Y, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner3High.Y, Is.AtMost(100 + tolerance));
+            Assert.That(workspace.Corner3High.Z, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner3High.Z, Is.AtMost(100 + tolerance));
+        }
+        [Test]
+        // Testing bounds of workspace low corner 4
+        public void BoundsCorner4Low()
+        {
+            float tolerance = 0.001f;
+            Coordinate2D upperleft = new Coordinate2D(10, 10);
+            Coordinate2D lowerright = new Coordinate2D(100, 100);
+            float height = 100;
+            float offset = 10f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+
+            Assert.That(workspace.Corner4Low.X, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner4Low.X, Is.AtMost(100 + tolerance));
+            Assert.That(workspace.Corner4Low.Y, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner4Low.Y, Is.AtMost(10 + tolerance));
+            Assert.That(workspace.Corner4Low.Z, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner4Low.Z, Is.AtMost(10 + tolerance));
+        }
+        [Test]
+        // Testing bounds of workspace high corner 4
+        public void BoundsCorner4High()
+        {
+            float tolerance = 0.001f;
+            Coordinate2D upperleft = new Coordinate2D(10, 10);
+            Coordinate2D lowerright = new Coordinate2D(100, 100);
+            float height = 100;
+            float offset = 10f;
+            Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+
+            Assert.That(workspace.Corner4High.X, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner4High.X, Is.AtMost(100 + tolerance));
+            Assert.That(workspace.Corner4High.Y, Is.AtLeast(10 - tolerance));
+            Assert.That(workspace.Corner4High.Y, Is.AtMost(10 + tolerance));
+            Assert.That(workspace.Corner4High.Z, Is.AtLeast(100 - tolerance));
+            Assert.That(workspace.Corner4High.Z, Is.AtMost(100 + tolerance));
         }
     }
 }
