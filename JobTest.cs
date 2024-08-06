@@ -8,6 +8,8 @@ using MotionPlanning.State;
 using MotionPlanning.Statements;
 using MotionPlanning.Auxiliary;
 using System.Windows.Shapes;
+using MotionPlanning.Coordinates;
+using MotionPlanning.Workspace;
 
 namespace UnitTest
 {
@@ -21,7 +23,11 @@ namespace UnitTest
             string gcode2 = "G0 X141.379 Y84.536 E324.40933";
             string gcode3 = "G11 X141.379 Y84.536 E324.40933";
 
-            Job job = new Job();
+            Coordinate2D coord1 = new(10f, 10f);
+            Coordinate2D coord2 = new(100f, 100f);
+            Workspace workspace = new(coord1, coord2, 100, 10);
+
+            Job job = new Job(workspace);
 
             IURScript linear = Identifier.Identify(gcode1, job);
             IURScript rapid = Identifier.Identify(gcode2, job);
@@ -41,8 +47,11 @@ namespace UnitTest
         public void Bounds()
         {
             float tolerance = 0.0001f;
-            State st = new State();
-            Job job = new Job();
+            Coordinate2D coord1 = new(10f, 10f);
+            Coordinate2D coord2 = new(100f, 100f);
+            Workspace workspace = new(coord1, coord2, 100, 10);
+            State st = new State(workspace);
+            Job job = new Job(workspace);
             string gcode = "G0 X141.379 Y84.536 E324.40933";
             IURScript statement = Identifier.Identify(gcode, job);
             job.AddStatement(statement);

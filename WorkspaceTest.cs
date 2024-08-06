@@ -104,12 +104,12 @@ namespace UnitTest
         // Testing for valid job
         public void ValidJob()
         {
-            Job job = new Job();
             Coordinate2D upperleft = new Coordinate2D(10, 10);
             Coordinate2D lowerright = new Coordinate2D(100, 100);
             float height = 100;
             float offset = 0f;
             Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+            Job job = new Job(workspace);
             string gcode1 = "G0 X41.379 Y84.536 E324.40933";
             string gcode2 = "G0 X11.379 Y84.536 E324.40933";
             string gcode3 = "G0 X11.379 Y34.536 Z56.34 E324.40933";
@@ -124,12 +124,12 @@ namespace UnitTest
         // Testing for invalid job regarding to x-axis
         public void InvalidJobXAxis()
         {
-            Job job = new Job();
             Coordinate2D upperleft = new Coordinate2D(10, 10);
             Coordinate2D lowerright = new Coordinate2D(100, 100);
             float height = 100;
             float offset = 0f;
             Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+            Job job = new Job(workspace);
             string gcode1 = "G0 X41.379 Y84.536 E324.40933";
             string gcode2 = "G0 X141.379 Y84.536 E324.40933";
             string gcode3 = "G0 X11.379 Y34.536 Z56.34 E324.40933";
@@ -144,12 +144,12 @@ namespace UnitTest
         // Testing for invalid job regarding to y-axis
         public void InvalidJobYAxis()
         {
-            Job job = new Job();
             Coordinate2D upperleft = new Coordinate2D(10, 10);
             Coordinate2D lowerright = new Coordinate2D(100, 100);
             float height = 100;
             float offset = 0f;
             Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+            Job job = new Job(workspace);
             string gcode1 = "G0 X41.379 Y84.536 E324.40933";
             string gcode2 = "G0 X11.379 Y184.536 E324.40933";
             string gcode3 = "G0 X11.379 Y34.536 Z56.34 E324.40933";
@@ -164,12 +164,12 @@ namespace UnitTest
         // Testing for invalid job regarding to height
         public void InvalidJobHeight()
         {
-            Job job = new Job();
             Coordinate2D upperleft = new Coordinate2D(10, 10);
             Coordinate2D lowerright = new Coordinate2D(100, 100);
             float height = 100;
             float offset = 0f;
             Workspace workspace = new Workspace(lowerright, upperleft, height, offset);
+            Job job = new Job(workspace);
             string gcode1 = "G0 X41.379 Y84.536 Z0.0 E324.40933";
             string gcode2 = "G0 X11.379 Y14.536 E324.40933";
             string gcode3 = "G0 X11.379 Y34.536 Z156.34 E324.40933";
@@ -186,12 +186,12 @@ namespace UnitTest
         {
             float tolerance = 0.001f;
             
-            Job job = new Job();
             Coordinate2D coord1 = new Coordinate2D(10, 10);
             Coordinate2D coord2 = new Coordinate2D(100, 100);
             float height = 100;
             float offset = 0f;
             Workspace workspace = new Workspace(coord1, coord2, height, offset);
+            Job job = new Job(workspace);
 
             Assert.That(workspace.LowerX, Is.AtLeast(10 - tolerance));
             Assert.That(workspace.LowerX, Is.AtMost(10 + tolerance));

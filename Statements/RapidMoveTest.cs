@@ -7,6 +7,8 @@ using MotionPlanning.Statements;
 using MotionPlanning.State;
 using MotionPlanning.Auxiliary;
 using MotionPlanning.Job;
+using MotionPlanning.Coordinates;
+using MotionPlanning.Workspace;
 
 namespace UnitTest.Statements
 {
@@ -16,7 +18,10 @@ namespace UnitTest.Statements
         // Testing identification
         public void Identification()
         {
-            Job job = new Job();
+            Coordinate2D coord1 = new(10f, 10f);
+            Coordinate2D coord2 = new(100f, 100f);
+            Workspace workspace = new(coord1, coord2, 100, 10);
+            Job job = new Job(workspace);
             string gcode = "G0 X141.379 Y84.536 E324.40933";
             IURScript statement = Identifier.Identify(gcode, job);
             Assert.That(statement.GetType(), Is.EqualTo(typeof(RapidMove)));
@@ -28,7 +33,10 @@ namespace UnitTest.Statements
             float tolerance = 0.00001f;
             string gcode = "G0 X141.379 Y84.536 E324.40933";
             RapidMove stm = new RapidMove(gcode);
-            State st = new State();
+            Coordinate2D coord1 = new(10f, 10f);
+            Coordinate2D coord2 = new(100f, 100f);
+            Workspace workspace = new(coord1, coord2, 100, 10);
+            State st = new State(workspace);
             Assert.That(stm.Valid, Is.True);
             Assert.That(stm.CommandType, Is.EqualTo('G'));
             Assert.That(stm.CommandNumber, Is.EqualTo(0));
