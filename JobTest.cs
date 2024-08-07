@@ -50,7 +50,6 @@ namespace UnitTest
             Coordinate2D coord1 = new(10f, 10f);
             Coordinate2D coord2 = new(100f, 100f);
             Workspace workspace = new(coord1, coord2, 100, 10);
-            State st = new State(workspace);
             Job job = new Job(workspace);
             string gcode = "G0 X141.379 Y84.536 E324.40933";
             IURScript statement = Identifier.Identify(gcode, job);
@@ -73,6 +72,39 @@ namespace UnitTest
             Assert.That(job.MinZ, Is.AtMost(1.25 + tolerance));
             Assert.That(job.MaxZ, Is.AtLeast(10.25 - tolerance));
             Assert.That(job.MaxZ, Is.AtMost(10.25 + tolerance));
+        }
+
+        [Test]
+        // Test shifting values on all axes
+        public void ShiftXYZ()
+        {
+            float tolerance = 0.0001f;
+
+            Coordinate2D coord1 = new(10f, 10f);
+            Coordinate2D coord2 = new(100f, 100f);
+            Workspace workspace = new(coord1, coord2, 100, 10);
+
+            Job job = new Job(workspace);
+
+            string gcode1 = "G0 X5.00 Y20.00 Z1.00 E324.40933";
+            string gcode2 = "G0 X25.00 Y40.00 E324.40933";
+            string gcode3 = "G0 X20.379 Y34.536 Z56.00 E324.40933";
+
+            IURScript statement1 = Identifier.Identify(gcode1, job);
+            job.AddStatement(statement1);
+
+            IURScript statement2 = Identifier.Identify(gcode2, job);
+            job.AddStatement(statement2);
+
+            IURScript statement3 = Identifier.Identify(gcode3, job);
+            job.AddStatement(statement3);
+
+            Assert.That(job.XShift, Is.AtLeast(30 - tolerance));
+            Assert.That(job.XShift, Is.AtMost(30 + tolerance));
+            Assert.That(job.YShift, Is.AtLeast(15 - tolerance));
+            Assert.That(job.YShift, Is.AtMost(15 + tolerance));
+            Assert.That(job.ZShift, Is.AtLeast(-1 - tolerance));
+            Assert.That(job.ZShift, Is.AtMost(-1 + tolerance));
         }
     }
 }

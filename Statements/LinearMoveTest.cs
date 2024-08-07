@@ -46,5 +46,6 @@ namespace UnitTest.Statements
             Assert.That(stm.Y, Is.AtMost(84.536 + tolerance));
             Assert.That(stm.Z, Is.AtMost(float.MinValue + tolerance));
         }
+
     }
 }

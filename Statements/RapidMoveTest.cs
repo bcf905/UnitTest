@@ -50,7 +50,8 @@ namespace UnitTest.Statements
             Assert.That(st.X, Is.AtMost(141.379 + tolerance));
             Assert.That(st.Y, Is.AtLeast(84.536 - tolerance));
             Assert.That(st.Y, Is.AtMost(84.536 + tolerance));
-            Assert.That(st.Z, Is.AtMost(float.MinValue + tolerance));
+            Assert.That(st.Z, Is.AtLeast(0f - tolerance));
+            Assert.That(st.Z, Is.AtMost(0f + tolerance));
         }
     }
 }

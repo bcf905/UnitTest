@@ -54,7 +54,8 @@ namespace UnitTest
             Assert.That(st.X, Is.AtMost(151.379 + tolerance));
             Assert.That(st.Y, Is.AtLeast(94.536 - tolerance));
             Assert.That(st.Y, Is.AtMost(94.536 + tolerance));
-            Assert.That(st.Z, Is.AtMost(float.MinValue + tolerance));
+            Assert.That(st.Z, Is.AtLeast(0.0 - tolerance));
+            Assert.That(st.Z, Is.AtMost(0.0 + tolerance));
         }
         [Test]
         // Testing a statement with inches
@@ -73,7 +74,108 @@ namespace UnitTest
             Assert.That(st.X, Is.AtMost(3591.0266 + tolerance));
             Assert.That(st.Y, Is.AtLeast(2147.2144 - tolerance));
             Assert.That(st.Y, Is.AtMost(2147.2144 + tolerance));
-            Assert.That(st.Z, Is.AtMost(float.MinValue + tolerance));
+            Assert.That(st.Z, Is.AtLeast(0.0 - tolerance));
+            Assert.That(st.Z, Is.AtMost(0.0 + tolerance));
+        }
+
+        [Test]
+        // Testing movement with x,y,z parameters
+        // 
+        public void MovementXYZ()
+        {
+            float tolerance = 0.00001f;
+            string gcode = "G1 X41.379 Y84.536 Z34.56 E324.40933";
+            LinearMove stm = new LinearMove(gcode);
+            Coordinate2D coord1 = new(10f, 10f);
+            Coordinate2D coord2 = new(100f, 100f);
+            Workspace workspace = new(coord1, coord2, 100, 10);
+            State st = new State(workspace);
+            st.X = 45f;
+            st.Y = 45f;
+            st.Z = 55f;
+
+            string script = stm.URScript(st);
+            Assert.That(st.X, Is.AtLeast(41.379 - tolerance));
+            Assert.That(st.X, Is.AtMost(41.379 + tolerance));
+            Assert.That(st.Y, Is.AtLeast(84.536 - tolerance));
+            Assert.That(st.Y, Is.AtMost(84.536 + tolerance));
+            Assert.That(st.Z, Is.AtLeast(34.56 - tolerance));
+            Assert.That(st.Z, Is.AtMost(34.56 + tolerance));
+        }
+
+        [Test]
+        // Testing movement only x-axis
+        // 
+        public void MovementX()
+        {
+            float tolerance = 0.00001f;
+            string gcode = "G1 X41.379 E324.40933";
+            LinearMove stm = new LinearMove(gcode);
+            Coordinate2D coord1 = new(10f, 10f);
+            Coordinate2D coord2 = new(100f, 100f);
+            Workspace workspace = new(coord1, coord2, 100, 10);
+            State st = new State(workspace);
+            st.X = 45f;
+            st.Y = 45f;
+            st.Z = 55f;
+
+            string script = stm.URScript(st);
+            Assert.That(st.X, Is.AtLeast(41.379 - tolerance));
+            Assert.That(st.X, Is.AtMost(41.379 + tolerance));
+            Assert.That(st.Y, Is.AtLeast(45f - tolerance));
+            Assert.That(st.Y, Is.AtMost(45f + tolerance));
+            Assert.That(st.Z, Is.AtLeast(55f - tolerance));
+            Assert.That(st.Z, Is.AtMost(55f + tolerance));
+        }
+
+        [Test]
+        // Testing movement only y-axis
+        // 
+        public void MovementY()
+        {
+            float tolerance = 0.00001f;
+            string gcode = "G1 Y84.536 E324.40933";
+            LinearMove stm = new LinearMove(gcode);
+            Coordinate2D coord1 = new(10f, 10f);
+            Coordinate2D coord2 = new(100f, 100f);
+            Workspace workspace = new(coord1, coord2, 100, 10);
+            State st = new State(workspace);
+            st.X = 45f;
+            st.Y = 45f;
+            st.Z = 55f;
+
+            string script = stm.URScript(st);
+            Assert.That(st.X, Is.AtLeast(45f - tolerance));
+            Assert.That(st.X, Is.AtMost(45f + tolerance));
+            Assert.That(st.Y, Is.AtLeast(84.536 - tolerance));
+            Assert.That(st.Y, Is.AtMost(84.536 + tolerance));
+            Assert.That(st.Z, Is.AtLeast(55f - tolerance));
+            Assert.That(st.Z, Is.AtMost(55f + tolerance));
+        }
+
+        [Test]
+        // Testing movement only z-axis
+        // 
+        public void MovementZ()
+        {
+            float tolerance = 0.00001f;
+            string gcode = "G1 Z34.56 E324.40933";
+            LinearMove stm = new LinearMove(gcode);
+            Coordinate2D coord1 = new(10f, 10f);
+            Coordinate2D coord2 = new(100f, 100f);
+            Workspace workspace = new(coord1, coord2, 100, 10);
+            State st = new State(workspace);
+            st.X = 45f;
+            st.Y = 45f;
+            st.Z = 55f;
+
+            string script = stm.URScript(st);
+            Assert.That(st.X, Is.AtLeast(45f - tolerance));
+            Assert.That(st.X, Is.AtMost(45f + tolerance));
+            Assert.That(st.Y, Is.AtLeast(45f - tolerance));
+            Assert.That(st.Y, Is.AtMost(45f + tolerance));
+            Assert.That(st.Z, Is.AtLeast(34.56 - tolerance));
+            Assert.That(st.Z, Is.AtMost(34.56 + tolerance));
         }
     }
 }

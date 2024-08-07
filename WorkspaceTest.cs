@@ -210,7 +210,9 @@ namespace UnitTest
             IURScript statement2 = Identifier.Identify(gcode2, job);
             IURScript statement3 = Identifier.Identify(gcode3, job);
 
-            workspace.CalibrateJob(job);
+            job.AddStatement(statement1);
+            job.AddStatement(statement2);
+            job.AddStatement(statement3);
 
             Assert.That(job.MinX, Is.AtLeast(5 - tolerance));
             Assert.That(job.MinX, Is.AtMost(5 + tolerance));
