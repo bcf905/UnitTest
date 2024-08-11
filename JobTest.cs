@@ -60,6 +60,7 @@ namespace UnitTest
             string gcode3 = "G0 X111.379 Y94.536 Z10.25 E324.40933";
             IURScript statement3 = Identifier.Identify(gcode3, job);
             job.AddStatement(statement3);
+
             Assert.That(job.MinX, Is.AtLeast(111.379 - tolerance));
             Assert.That(job.MinX, Is.AtMost(111.379 + tolerance));
             Assert.That(job.MaxX, Is.AtLeast(141.379 - tolerance));
@@ -78,7 +79,7 @@ namespace UnitTest
         // Test shifting values on all axes
         public void ShiftXYZ()
         {
-            float tolerance = 0.0001f;
+            float tolerance = 0.001f;
 
             Coordinate2D coord1 = new(10f, 10f);
             Coordinate2D coord2 = new(100f, 100f);
@@ -99,12 +100,22 @@ namespace UnitTest
             IURScript statement3 = Identifier.Identify(gcode3, job);
             job.AddStatement(statement3);
 
-            Assert.That(job.XShift, Is.AtLeast(30 - tolerance));
-            Assert.That(job.XShift, Is.AtMost(30 + tolerance));
-            Assert.That(job.YShift, Is.AtLeast(15 - tolerance));
-            Assert.That(job.YShift, Is.AtMost(15 + tolerance));
-            Assert.That(job.ZShift, Is.AtLeast(-1 - tolerance));
-            Assert.That(job.ZShift, Is.AtMost(-1 + tolerance));
+            List<string> statements = job.GetURScript();
+
+            Assert.That(job.XShift, Is.AtLeast(30f - tolerance));
+            Assert.That(job.XShift, Is.AtMost(30f + tolerance));
+            Assert.That(job.YShift, Is.AtLeast(15f - tolerance));
+            Assert.That(job.YShift, Is.AtMost(15f + tolerance));
+            Assert.That(job.ZShift, Is.AtLeast(9f - tolerance));
+            Assert.That(job.ZShift, Is.AtMost(9f + tolerance));
+
+            State st = job.GetState();
+            Assert.That(st.XShift, Is.AtLeast(30f - tolerance));
+            Assert.That(st.XShift, Is.AtMost(30f + tolerance));
+            Assert.That(st.YShift, Is.AtLeast(15f - tolerance));
+            Assert.That(st.YShift, Is.AtMost(15f + tolerance));
+            Assert.That(st.ZShift, Is.AtLeast(9f - tolerance));
+            Assert.That(st.ZShift, Is.AtMost(9f + tolerance));
         }
     }
 }

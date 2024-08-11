@@ -214,6 +214,8 @@ namespace UnitTest
             job.AddStatement(statement2);
             job.AddStatement(statement3);
 
+            List<string> statements = job.GetURScript();
+
             Assert.That(job.MinX, Is.AtLeast(5 - tolerance));
             Assert.That(job.MinX, Is.AtMost(5 + tolerance));
             Assert.That(job.MaxX, Is.AtLeast(25 - tolerance));
